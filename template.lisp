@@ -134,8 +134,11 @@
 (defun compile-template (template)
   (let ((vars (collect-vars template)))
     (compile nil `(lambda ()
-		    (declare (special ,@vars))
-		    ,@template))))
+		    (symbol-macrolet ,(mapcar (lambda (v)
+						`(,v (when (boundp ',v)
+						       (symbol-value ',v))))
+					      vars)
+		      ,@template)))))
 
 ;;  File-level cache
 
