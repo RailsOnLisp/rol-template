@@ -133,7 +133,7 @@
   (let (vars)
     (do-tree (x sexp)
       (when (and (symbolp x) (eq *template-vars-package* (symbol-package x)))
-	(push x vars)))
+	(pushnew x vars :test #'eq)))
     (nreverse vars)))
 
 (defun compile-template (template)
