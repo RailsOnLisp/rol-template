@@ -22,6 +22,7 @@
   (:export
    #:*template-output*
    #:*template-vars-package*
+   #:define-template-var
    #:template-let
    #:read-template
    #:compile-template
@@ -40,6 +41,11 @@
 (defun template-var-key (var)
   (intern (symbol-name var) *template-vars-package*))
 
+(defun template-var-p (var)
+  (and (symbolp var)
+       (eq (symbol-package var)
+	   (find-package *template-vars-package*))))
+
 (defmacro template-let (bindings &body body)
   "By default bind to an existing variable."
   (let ((bindings (mapcar (lambda (b)
@@ -55,6 +61,9 @@
 				   `(,(car b) ,(template-var-key (car b))))
 				 bindings)
 	 ,@body))))
+
+(defmacro define-template-var (name value &optional doc)
+  `(defvar ,(template-var-key name) ,value ,doc))
 
 ;;  Template reader
 
@@ -136,14 +145,33 @@
 	(pushnew x vars :test #'eq)))
     (nreverse vars)))
 
+(defun template-printer-code (template)
+  (let ((vars))
+    (labels ((walk (x)
+	       (if (consp x)
+		   (cons (walk (car x)) (walk (cdr x)))
+		   (if (template-var-p x)
+		       (let ((g (assoc x vars)))
+			 (if g
+			     (cdr g)
+			     (cdar (push (cons x (gensym (symbol-name x)))
+					 vars))))
+		       x))))
+      (let ((body (walk template)))
+	`(lambda ()
+	   ,@(if vars
+		 `((let ,(mapcar (lambda (var)
+				   `(,(cdr var) (when (boundp ',(car var))
+						  (symbol-value ',(car var)))))
+				 vars)
+		     ,@body))
+		 body))))))
+
+#+nil
+(template-printer-code (read-template-from-string "plop«= $abc »"))
+
 (defun compile-template (template)
-  (let ((vars (collect-vars template)))
-    (compile nil `(lambda ()
-		    (symbol-macrolet ,(mapcar (lambda (v)
-						`(,v (when (boundp ',v)
-						       (symbol-value ',v))))
-					      vars)
-		      ,@template)))))
+  (compile nil (template-printer-code template)))
 
 ;;  File-level cache
 
