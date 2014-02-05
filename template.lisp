@@ -124,7 +124,9 @@
     (read-template s)))
 
 (defun read-template-from-file (path)
-  (with-open-file (stream path :element-type 'character)
+  (with-open-file (stream path
+			  :element-type 'character
+			  :external-format :utf-8)
     (read-template stream)))
 
 ;;  Compilation
