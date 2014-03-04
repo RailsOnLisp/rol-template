@@ -24,6 +24,8 @@
    #:*template-vars-package*
    #:define-template-var
    #:template-let
+   #:template-var
+   #:template-var-key
    #:read-template
    #:compile-template
    #:compile-template-from-file
@@ -40,6 +42,9 @@
 
 (defun template-var-key (var)
   (intern (symbol-name var) *template-vars-package*))
+
+(defmacro template-var (name)
+  (template-var-key name))
 
 (defun template-var-p (var)
   (and (symbolp var)
