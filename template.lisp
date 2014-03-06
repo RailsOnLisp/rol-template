@@ -67,8 +67,10 @@
 				 bindings)
 	 ,@body))))
 
-(defmacro define-template-var (name value &optional doc)
-  `(defvar ,(template-var-key name) ,value ,doc))
+(defmacro define-template-var (name &optional (value nil value-p) doc)
+  (if value-p
+      `(defvar ,(template-var-key name) ,value ,doc))
+      `(defvar ,(template-var-key name)))
 
 ;;  Template reader
 
