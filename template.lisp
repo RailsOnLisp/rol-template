@@ -68,9 +68,13 @@
 	 ,@body))))
 
 (defmacro define-template-var (name &optional (value nil value-p) doc)
-  (if value-p
-      `(defvar ,(template-var-key name) ,value ,doc))
-      `(defvar ,(template-var-key name)))
+  (let ((var (template-var-key name)))
+    (if value-p
+	`(defparameter ,var ,value ,@(when doc `(,doc)))
+	(if doc
+	    `(progn (defvar ,var)
+		    (setf (documentation ',var t) ,doc))
+	    `(defvar ,var)))))
 
 ;;  Template reader
 
