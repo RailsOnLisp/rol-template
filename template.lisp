@@ -16,8 +16,8 @@
 ;;  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ;;
 
-(defpackage :lowh.triangle.template
-  (:nicknames :L>template)
+(defpackage :RoL-template
+  (:nicknames :L>template :lowh.triangle.template)
   (:use :cl)
   (:export
    #:*template-output*
@@ -32,12 +32,12 @@
    #:clear-template-cache
    #:print-template))
 
-(in-package :L>template)
+(in-package :RoL-template)
 
 ;;  Environment
 
 (defparameter *template-vars-package*
-  (defpackage :lowh.triangle.template.vars
+  (defpackage :RoL-template.vars
     (:nicknames :L>template.vars)))
 
 (defun template-var-key (var)

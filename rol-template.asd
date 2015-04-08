@@ -1,7 +1,7 @@
 ;;
-;;  Triangle
+;;  RoL-template  -  Compiled text templates with file-level cache
 ;;
-;;  Copyright 2012,2013 Thomas de Grivel <thomas@lowh.net>
+;;  Copyright 2012-2015 Thomas de Grivel <thomas@lowh.net>
 ;;
 ;;  Permission to use, copy, modify, and distribute this software for any
 ;;  purpose with or without fee is hereby granted, provided that the above
@@ -18,13 +18,13 @@
 
 (in-package #:cl-user)
 
-(defpackage #:lowh.triangle.template.system
+(defpackage #:RoL-template.system
   (:use #:cl #:asdf))
 
-(in-package #:lowh.triangle.template.system)
+(in-package #:RoL-template.system)
 
-(defsystem lowh.triangle.template
-  :name "lowh.triangle.template"
+(asdf:defsystem #:RoL-template
+  :name "RoL-template"
   :author "Thomas de Grivel <thomas@lowh.net>"
   :version "0.1"
   :description "Compiled text templates with file-level cache."
