@@ -113,7 +113,7 @@
 	 (assert (not *writing*) () "Template parse error: Nested «=")
 	 (let ((*nested* t)
 	       (*writing* t))
-	   `(princ ,(read stream t nil t) *template-output*))))
+	   `(write-string (str ,(read stream t nil t)) *template-output*))))
   (let ((rt (copy-readtable nil)))
     (make-dispatch-macro-character #\« t rt)
     (set-dispatch-macro-character #\« #\Space #'dispatch-template-eval rt)
