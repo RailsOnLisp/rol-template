@@ -18,7 +18,7 @@
 
 (defpackage :RoL-template
   (:nicknames :L>template :lowh.triangle.template)
-  (:use :cl)
+  (:use :cl :str)
   (:export
    #:*template-output*
    #:*template-vars-package*

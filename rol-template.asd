@@ -28,5 +28,6 @@
   :author "Thomas de Grivel <thomas@lowh.net>"
   :version "0.1"
   :description "Compiled text templates with file-level cache."
+  :depends-on ("str")
   :components
   ((:file "template")))
