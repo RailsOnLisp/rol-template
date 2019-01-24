@@ -167,15 +167,18 @@
                        (let ((g (assoc x vars)))
                          (if g
                              (cdr g)
-                             (cdar (push (cons x (gensym (symbol-name x)))
+                             (cdar (push (cons x (gensym
+                                                  (symbol-name x)))
                                          vars))))
                        x))))
       (let ((body (walk template)))
         `(lambda ()
            ,@(if vars
                  `((let ,(mapcar (lambda (var)
-                                   `(,(cdr var) (when (boundp ',(car var))
-                                                  (symbol-value ',(car var)))))
+                                   `(,(cdr var) (when (boundp
+                                                       ',(car var))
+                                                  (symbol-value
+                                                   ',(car var)))))
                                  vars)
                      ,@body))
                  body))))))
@@ -202,7 +205,8 @@
     (if (and found
              (= (car found) #2=(file-write-date path)))
         (cdr found)
-        (let ((template (compile-template (read-template-from-file path))))
+        (let ((template (compile-template (read-template-from-file
+                                           path))))
           (format t "~&;; Compiling template ~S~%" path)
           (if found
               (setf (car found) #2#
@@ -215,7 +219,8 @@
 (defun print-template (template)
   (funcall (etypecase template
              (pathname (compile-template-from-file template))
-             (string (compile-template (read-template-from-string template))))))
+             (string (compile-template (read-template-from-string
+                                        template))))))
 
 (define-compiler-macro print-template (&whole form template)
   (if (stringp template)
